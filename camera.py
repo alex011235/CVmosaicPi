@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-# ----------------------------------------------------
-# Class for controlling the Raspberry Pi camera.
-# This class contains functionality for snapping 
-# images and storing them in a matrix. 
+# -------------------------------------------------------------
+# Class for controlling the Raspberry Pi camera. This class 
+# contains functionality for snapping images and storing them 
+# in a matrix. 
 #
 # Alexander Karlsson, 2015
-# ----------------------------------------------------
+# -------------------------------------------------------------
 
 import io
 import time

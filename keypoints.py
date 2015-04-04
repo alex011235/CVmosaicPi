@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-# ----------------------------------------------------
-# A class for extracting keypoints from an image.
-# One can choose 'fast', 'sift' and 'surf'. Although
-# 'fast' is better for the Pi, since it is fast.
+# -------------------------------------------------------------
+# A class for extracting keypoints from an image. One can 
+# choose 'fast', 'sift' and 'surf'. Although 'fast' is better 
+# for the Pi, since it is fast :)
 #
 # Alexander Karlsson, 2015
-# ----------------------------------------------------
+# -------------------------------------------------------------
  
 import numpy as np
 import cv2
