@@ -62,7 +62,7 @@ for i in range(0,len(images)):
 		image = images[i][j]
 		image = image[:, :, ::-1] # RGB
 		keys = kp[i][j]
-		im = cv2.drawKeypoints(image,keys)
+		im = cv2.drawKeypoints(image,keys,color=(0,255,255))
 		imshow(im)
 		show()	
 
