@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+# ----------------------------------------------------
+# Main program
+# ----------------------------------------------------
+
+
 from servo import *
 from camera import *
 from keypoints import *

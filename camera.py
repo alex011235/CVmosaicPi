@@ -1,3 +1,12 @@
+#!/usr/bin/env python
+# ----------------------------------------------------
+# Class for controlling the Raspberry Pi camera.
+# This class contains functionality for snapping 
+# images and storing them in a matrix. 
+#
+# Alexander Karlsson, 2015
+# ----------------------------------------------------
+
 import io
 import time
 import picamera
@@ -27,30 +36,4 @@ class Camera:
 
 	def retreive_image_matrix(self):
 		return self.images
-
-# Test block
-
-#cam = Camera()
-#for i in range(1,3):
-#	cam.snap_image()
-#	time.sleep(0.5)
-#
-#cam.new_column()
-#
-#for i in range(1,3):
-#	cam.snap_image()
-#	time.sleep(0.5)
-#
-#
-#images = cam.retreive_images()
-#
-#for imgs in images:
-#	for image in imgs:
-#
-#		image = image[:, :, ::-1] # RGB
-#		imshow(image)
-#		show()
-
-
-
 
