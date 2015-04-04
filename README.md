@@ -6,4 +6,4 @@ A very short project description: Stitch images for a mosaic panorama using serv
 ### Progress
 #### 2015-04-04
 Extracted keypoints using the 'FAST' algorithm, implemented in opencv
-<img src="images/sample1.png" height="500" alt="Screenshot"/>
+<img src="images/sample3.png" height="500" alt="Screenshot"/>
