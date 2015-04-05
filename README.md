@@ -15,5 +15,5 @@ Extracted keypoints using the 'FAST' algorithm, implemented in opencv
 Physical model completed. The downside in using servos is that it's hard to control position.
 
 <p align="center">
-<img src="images/model.jpg" height="400" alt="Screenshot"/>
+<img src="images/model.jpg" height="500" alt="Screenshot"/>
 </p>
