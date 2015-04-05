@@ -7,11 +7,13 @@ A very short project description: Stitch images for a mosaic panorama using serv
 
 ##### 2015-04-04
 Extracted keypoints using the 'FAST' algorithm, implemented in opencv
+<p align="center">
 <img src="images/sample7.png" height="500" alt="Screenshot"/>
+</p>
 
 ##### 2015-03-27
 Physical model completed. The downside in using servos is that it's hard to control position.
 
+<p align="center">
 <img src="images/model.jpg" height="400" alt="Screenshot"/>
-
-
+</p>
