@@ -60,11 +60,12 @@ for i in range(0,len(images)):
 	for j in range(0,len(images[i])):
 	
 		image = images[i][j]
-		image = image[:, :, ::-1] # RGB
+		#image = image[:, :, ::-1] # RGB
 		keys = kp[i][j]
-		im = cv2.drawKeypoints(image,keys,color=(0,255,255))
-		imshow(im)
-		show()	
+		im = cv2.drawKeypoints(image,keys,color=(255,0,255))
+		cv2.imwrite('bilds/test' + str(i)+str(j) + '.jpg',im)
+		#imshow(im)
+		#show()	
 
 
 
