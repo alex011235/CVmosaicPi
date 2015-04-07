@@ -8,9 +8,8 @@ def matches(img1,img2):
 	# SURF keypoints and descriptors
 	kp1, des1 = surf.detectAndCompute(img1,None)
 	kp2, des2 = surf.detectAndCompute(img2,None)
-	# Find matches using k nearest neighbor
-	FLANN_INDEX_KDTREE = 0
-	index_params = dict(algorithm = FLANN_INDEX_KDTREE, trees = 5)
+	# Find matches using k nearest neighbord
+	index_params = dict(algorithm = 0, trees = 5)
 	search_params = dict(checks = 10)
 	flann = cv2.FlannBasedMatcher(index_params, search_params)
 	matches = flann.knnMatch(des1,des2,k=2)
