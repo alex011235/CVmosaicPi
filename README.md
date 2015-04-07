@@ -6,7 +6,7 @@ A very short project description: Stitch images for a mosaic panorama using serv
 ### Progress
 
 #### 2015-04-07
-Got the SURF working. Gives rather matches, some ouliers.
+Got the SURF working. Rather good matching, some ouliers.
 <p align="center">
 <img src="images/matches_surf.png" height="500" alt="Screenshot"/>
 </p>
