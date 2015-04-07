@@ -5,6 +5,13 @@ A very short project description: Stitch images for a mosaic panorama using serv
 
 ### Progress
 
+#### 2015-04-07
+Got the SURF working. Gives rather matches, some ouliers.
+<p align="center">
+<img src="images/matches_surf.png" height="500" alt="Screenshot"/>
+</p>
+Images used for matching are private.
+
 ##### 2015-04-04
 Extracted keypoints using the 'FAST' algorithm, implemented in opencv
 <p align="center">

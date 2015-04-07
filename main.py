@@ -6,7 +6,7 @@
 
 from servo import *
 from camera import *
-from keypoints import *
+#from keypoints import *
 import cv2
 import time
 from pylab import *
@@ -53,17 +53,17 @@ for i in range(1,4):
 
 
 images = cam.retreive_image_matrix()
-keyp = KeyPoints(images, 'fast')
-kp = keyp.keypoints()
+#keyp = KeyPoints(images, 'fast')
+#kp = keyp.keypoints()
 
 for i in range(0,len(images)):
 	for j in range(0,len(images[i])):
 	
 		image = images[i][j]
 		#image = image[:, :, ::-1] # RGB
-		keys = kp[i][j]
-		im = cv2.drawKeypoints(image,keys,color=(255,0,255))
-		cv2.imwrite('bilds/test' + str(i)+str(j) + '.jpg',im)
+		#keys = kp[i][j]
+		#im = cv2.drawKeypoints(image,keys,color=(255,0,255))
+		#cv2.imwrite('bilds/test' + str(i)+str(j) + '.jpg',im)
 		#imshow(im)
 		#show()	
 
