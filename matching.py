@@ -1,6 +1,14 @@
+# ---------------------------------------------------------------------
+# Code for running SURF and then getting the matches by useing knn.
+# The matches are used in RANSAC, in order to find a homography
+# and inliers.
+#
+# Alexander Karlsson
+# ---------------------------------------------------------------------
 import numpy as np
 import cv2
 from matplotlib import pyplot as plt
+from ransac import *
 
 def matches(img1,img2):
 	hessian_tresh = 500 # may speed up, but gives smaller amount of kp.
@@ -20,10 +28,30 @@ def matches(img1,img2):
 	    if a.distance < 0.7*b.distance:
 		best_m.append(a)
 
-
-	img1_pts = np.float32([ kp1[m.queryIdx].pt for m in best_m ]).reshape(-1,1,2)
+	img1_pts = np.float32([ kp1[m.queryIdx].pt for m in best_m ]).reshape(-1,1,2)	
 	img2_pts = np.float32([ kp2[m.trainIdx].pt for m in best_m ]).reshape(-1,1,2)
-	return img1_pts, img2_pts
+
+	w = len(best_m)
+	img1p = zeros((2,w))
+	img2p = zeros((2,w))
+
+	# Get some useful data
+	i = 0;
+	for m in img1_pts:
+		img1p[0][i] = m[0][0]
+		img1p[1][i] = m[0][1]
+		i += 1		
+
+	i = 0;
+	for m in img2_pts:
+		img2p[0][i] = m[0][0]
+		img2p[1][i] = m[0][1]
+		i += 1		
+	
+	H,inliers = ransac(img1p,img2p,50,5.0)
+	return img1_pts, img2_pts, inliers
+
+
 
 # Test code	
 img1 = cv2.imread('bilds/ny2.jpg',0)
@@ -33,7 +61,7 @@ img11 = img11[:, :, ::-1]
 img22 = cv2.imread('bilds/ny1.jpg')
 img22 = img22[:, :, ::-1]
 
-img1_pts, img2_pts = matches(img1,img2)
+img1_pts, img2_pts,inliers = matches(img1,img2)
 f, (ax1, ax2) = plt.subplots(1, 2, sharey=True)
  
 ax1.imshow(img11)
@@ -42,7 +70,14 @@ for p in img1_pts:
 
 ax2.imshow(img22)
 for p in img2_pts:
-	ax2.plot(p[0][0],p[0][1],'ro')
+	a, = ax2.plot(p[0][0],p[0][1],'ro')
+ax2.legend('fhdjk')
 
+for p in inliers:
+	b, = ax2.plot(p[0],p[1],'go')
+
+ax2.legend([a, b], ["SURF matches", "RANSAC inliers"])
+
+plt.suptitle('RANSAC test (50 iterations)', fontsize=14, fontweight='bold')
 plt.show()
 
