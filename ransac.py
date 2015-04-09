@@ -39,14 +39,15 @@ def homography(x1,x2):
 
 # RANSAC algorithm, finds the homography from xA to xB.
 # Terminates when max_iter is reached. err shouldbe about 5 pxls.
-def ransac(xA, xB, max_iter, err):
+def ransac(xA, xB, max_iter = 50, err = 5):
 	inliers_record = 0 
 	xa = xA[0] 
 	ya = xA[1]
 	xb = xB[0]
 	yb = xB[1]
 	H_best = []
-	best_inliers = []	
+	best_inliers = []
+	best_inliers2 = []	
 
 	for i in range(0, max_iter):
 		xA_rand = zeros((4,2))
@@ -73,26 +74,29 @@ def ransac(xA, xB, max_iter, err):
 		p2 = pflat(linalg.solve(Ht,p1))
 		x = p2[0]
 		y = p2[1]
-	
 		total = 0
 		inliers_cand = []
+		inliers_cand2 = []	
 		for k in range(0,len(x)):
 			a = array((x[k],y[k])).conj().transpose()
 			b = array((xb[k],yb[k])).conj().transpose()
+			c = array((xa[k],ya[k])).conj().transpose()
 			# compute error
 			error = linalg.norm(a-b) # nice!	
 			if error < err:
 				total += 1
 				inliers_cand.append(a.conj().transpose().tolist())
-
+				inliers_cand2.append(c.conj().transpose().tolist())
 					
 		# Check if total exceeds the record, then update the best
 		# homography and the inliers.
 		if total > inliers_record:
+			print total
 			inliers_record = total
 			H_best = Ht
 			best_inliers = inliers_cand
+			best_inliers2 = inliers_cand2
 
 
-	return H_best, best_inliers
+	return H_best, best_inliers, best_inliers2
 

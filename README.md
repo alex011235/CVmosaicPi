@@ -5,12 +5,17 @@ A very short project description: Stitch images for a mosaic panorama using serv
 
 ### Progress
 
+#### 2015-04-09
+Now inliers and corresponding points are included in the plots. 
+<p align="center">
+<img src="images/ransac_books.jpg" height="500" alt="Screenshot"/>
+</p>
+
 #### 2015-04-08
 First implementation of RANSAC. 
 <p align="center">
 <img src="images/ransac_test_inliers.png" height="500" alt="Screenshot"/>
 </p>
-
 
 #### 2015-04-07
 Got the SURF working. Rather good matching, some outliers.

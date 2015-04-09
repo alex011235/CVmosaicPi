@@ -6,13 +6,13 @@
 # Alexander Karlsson
 # ---------------------------------------------------------------------
 import numpy as np
-import cv2
+import cv2 
 from matplotlib import pyplot as plt
 from ransac import *
 
 def matches(img1,img2):
 	hessian_tresh = 500 # may speed up, but gives smaller amount of kp.
-	surf = cv2.SURF(500,upright=True)
+	surf = cv2.SURF(300,upright=True)
 	# SURF keypoints and descriptors
 	kp1, des1 = surf.detectAndCompute(img1,None)
 	kp2, des2 = surf.detectAndCompute(img2,None)
@@ -48,36 +48,39 @@ def matches(img1,img2):
 		img2p[1][i] = m[0][1]
 		i += 1		
 	
-	H,inliers = ransac(img1p,img2p,50,5.0)
-	return img1_pts, img2_pts, inliers
+	H,inliers,inliers2 = ransac(img1p,img2p,20,5.0)
+	return img1_pts, img2_pts, inliers, inliers2
 
 
 
 # Test code	
-img1 = cv2.imread('bilds/ny2.jpg',0)
-img2 = cv2.imread('bilds/ny1.jpg',0) 
-img11 = cv2.imread('bilds/ny2.jpg')
+img1 = cv2.imread('bilds/book2.jpg',0)
+img2 = cv2.imread('bilds/book1.jpg',0) 
+img11 = cv2.imread('bilds/book2.jpg')
 img11 = img11[:, :, ::-1]
-img22 = cv2.imread('bilds/ny1.jpg')
+img22 = cv2.imread('bilds/book1.jpg')
 img22 = img22[:, :, ::-1]
 
-img1_pts, img2_pts,inliers = matches(img1,img2)
+img1_pts, img2_pts, inliers1, inliers2 = matches(img1,img2)
 f, (ax1, ax2) = plt.subplots(1, 2, sharey=True)
  
 ax1.imshow(img11)
 for p in img1_pts:      		
 	ax1.plot(p[0][0],p[0][1],'ro')
 
+for p in inliers2:
+	ax1.plot(p[0],p[1],'go')
+
 ax2.imshow(img22)
 for p in img2_pts:
 	a, = ax2.plot(p[0][0],p[0][1],'ro')
 ax2.legend('fhdjk')
 
-for p in inliers:
+for p in inliers1:
 	b, = ax2.plot(p[0],p[1],'go')
 
 ax2.legend([a, b], ["SURF matches", "RANSAC inliers"])
 
-plt.suptitle('RANSAC test (50 iterations)', fontsize=14, fontweight='bold')
+plt.suptitle('RANSAC test (20 iterations)', fontsize=18, fontweight='bold')
 plt.show()
 
