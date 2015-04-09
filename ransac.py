@@ -46,7 +46,7 @@ def ransac(xA, xB, max_iter = 50, err = 5):
 	xb = xB[0]
 	yb = xB[1]
 	H_best = []
-	best_inliers = []
+	best_inliers1 = []
 	best_inliers2 = []	
 
 	for i in range(0, max_iter):
@@ -75,7 +75,7 @@ def ransac(xA, xB, max_iter = 50, err = 5):
 		x = p2[0]
 		y = p2[1]
 		total = 0
-		inliers_cand = []
+		inliers_cand1 = []
 		inliers_cand2 = []	
 		for k in range(0,len(x)):
 			a = array((x[k],y[k])).conj().transpose()
@@ -85,7 +85,7 @@ def ransac(xA, xB, max_iter = 50, err = 5):
 			error = linalg.norm(a-b) # nice!	
 			if error < err:
 				total += 1
-				inliers_cand.append(a.conj().transpose().tolist())
+				inliers_cand1.append(a.conj().transpose().tolist())
 				inliers_cand2.append(c.conj().transpose().tolist())
 					
 		# Check if total exceeds the record, then update the best
@@ -94,9 +94,9 @@ def ransac(xA, xB, max_iter = 50, err = 5):
 			print total
 			inliers_record = total
 			H_best = Ht
-			best_inliers = inliers_cand
+			best_inliers1 = inliers_cand1
 			best_inliers2 = inliers_cand2
 
 
-	return H_best, best_inliers, best_inliers2
+	return H_best, best_inliers1, best_inliers2
 
