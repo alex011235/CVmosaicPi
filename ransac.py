@@ -23,7 +23,6 @@ def homogeneous(x):
 def homography(x1,x2):
 	N = x1.shape[1]
 	M = zeros((2*N,9))
-	triZ = zeros((3))
 
 	# DLT
 	for i in range(N):
@@ -63,20 +62,15 @@ def ransac(xA, xB, max_iter = 50, err = 5):
 		
 		xA_rand = xA_rand.conj().transpose()
 		xB_rand = xB_rand.conj().transpose()	
-
-		# Add extra ones
-		xat = vstack((xA_rand,ones((1,xA_rand.shape[1]))))
-		xbt = vstack((xB_rand,ones((1,xB_rand.shape[1]))))		
 		
-		# Compute homography between xat and xbt		
-		Ht = homography(xbt,xat)
+		Ht = homography(xB_rand, xA_rand)
 		p1 = vstack((xa,ya,ones((1,xa.shape[0]))))
 		p2 = pflat(linalg.solve(Ht,p1))
 		x = p2[0]
 		y = p2[1]
-		total = 0
 		inliers_cand1 = []
 		inliers_cand2 = []	
+		total = 0
 		for k in range(0,len(x)):
 			a = array((x[k],y[k])).conj().transpose()
 			b = array((xb[k],yb[k])).conj().transpose()
@@ -97,6 +91,4 @@ def ransac(xA, xB, max_iter = 50, err = 5):
 			best_inliers1 = inliers_cand1
 			best_inliers2 = inliers_cand2
 
-
 	return H_best, best_inliers1, best_inliers2
-
