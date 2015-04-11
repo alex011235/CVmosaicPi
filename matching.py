@@ -7,6 +7,7 @@
 # ---------------------------------------------------------------------
 import numpy as np
 import cv2 
+import cv
 from matplotlib import pyplot as plt
 from ransac import *
 
@@ -48,8 +49,33 @@ def matches(img1,img2):
 		img2p[1][i] = m[0][1]
 		i += 1		
 	
-	H,inliers,inliers2 = ransac(img1p,img2p,20,5.0)
-	return img1_pts, img2_pts, inliers, inliers2
+	H,inliers,inliers2 = ransac(img1p,img2p,40,3.0)
+	return img1_pts, img2_pts, inliers, inliers2, H
+
+
+# Very slow
+def plot_inliers(img1, img1pts, inliers1, img2, img2pts, inliers2):
+	f, (ax1, ax2) = plt.subplots(1, 2, sharey=True)
+	ax1.plot(inliers1[0][0],inliers1[0][1],'go')
+	ax1.imshow(img1)	
+	for p in img1pts:      		
+		ax1.plot(p[0][0],p[0][1],'ro')
+
+	for p in inliers1:
+		ax1.plot(p[0],p[1],'go')
+
+	ax2.imshow(img2)
+	ax2.plot(inliers2[0][0],inliers2[0][1],'go')
+	
+	for p in img2pts:
+		a, = ax2.plot(p[0][0],p[0][1],'ro')
+		ax2.legend('fhdjk')
+
+	for p in inliers2:
+		b, = ax2.plot(p[0],p[1],'go')
+
+	ax2.legend([a, b], ["SURF matches", "RANSAC inliers"])
+	plt.show()
 
 
 
@@ -61,26 +87,21 @@ img11 = img11[:, :, ::-1]
 img22 = cv2.imread('bilds/book1.jpg')
 img22 = img22[:, :, ::-1]
 
-img1_pts, img2_pts, inliers1, inliers2 = matches(img1,img2)
-f, (ax1, ax2) = plt.subplots(1, 2, sharey=True)
- 
-ax1.imshow(img11)
-for p in img1_pts:      		
-	ax1.plot(p[0][0],p[0][1],'ro')
+img1_pts, img2_pts, inliers2, inliers1,H = matches(img1,img2)
+print '----------------'
+print inliers1[0]
+print inliers2[0]
 
-for p in inliers2:
-	ax1.plot(p[0],p[1],'go')
+#plot_inliers(img11,img1_pts,inliers1,img22,img2_pts,inliers2)
 
-ax2.imshow(img22)
-for p in img2_pts:
-	a, = ax2.plot(p[0][0],p[0][1],'ro')
-ax2.legend('fhdjk')
+img_2 = cv2.warpPerspective(img22,H,(1000,750))
+#affine transformation matrix
+mat = matrix([[1, 0, abs(inliers1[0][1]-inliers2[0][1])],[0, 1, abs(inliers1[0][0]-inliers2[0][0])]])
+mat1 = matrix([[1, 0, 0],[0, 1, 0]])
+img_2_warped = cv2.warpAffine(img_2,mat,(1500,1100))
+img_1_warped = cv2.warpAffine(img11,mat,(1500,1100))
 
-for p in inliers1:
-	b, = ax2.plot(p[0],p[1],'go')
-
-ax2.legend([a, b], ["SURF matches", "RANSAC inliers"])
-
-plt.suptitle('RANSAC test (20 iterations)', fontsize=18, fontweight='bold')
+b = cv2.addWeighted(img_1_warped,0.5,img_2_warped,0.5,0.5)
+plt.imshow(b)
 plt.show()
 

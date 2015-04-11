@@ -5,6 +5,14 @@ A very short project description: Stitch images for a mosaic panorama using serv
 
 ### Progress
 
+
+#### 2015-04-11
+Managed to stitch two images. Aligns good, but blending is not ok.
+<p align="center">
+<img src="images/first_align.png" height="500" alt="Screenshot"/>
+</p>
+
+
 #### 2015-04-09
 Now inliers and corresponding points are included in the plots. 
 <p align="center">
