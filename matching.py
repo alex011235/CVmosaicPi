@@ -13,7 +13,7 @@ from ransac import *
 
 def matches(img1,img2):
 	hessian_tresh = 500 # may speed up, but gives smaller amount of kp.
-	surf = cv2.SURF(300,upright=True)
+	surf = cv2.SURF(500,upright=True)
 	# SURF keypoints and descriptors
 	kp1, des1 = surf.detectAndCompute(img1,None)
 	kp2, des2 = surf.detectAndCompute(img2,None)
