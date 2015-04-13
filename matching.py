@@ -49,7 +49,7 @@ def matches(img1,img2):
 		img2p[1][i] = m[0][1]
 		i += 1		
 	
-	H,inliers,inliers2 = ransac(img1p,img2p,40,3.0)
+	H,inliers,inliers2 = ransac(img1p,img2p,20,3)
 	return img1_pts, img2_pts, inliers, inliers2, H
 
 
@@ -78,30 +78,35 @@ def plot_inliers(img1, img1pts, inliers1, img2, img2pts, inliers2):
 	plt.show()
 
 
-
+from PIL import Image
 # Test code	
-img1 = cv2.imread('bilds/book2.jpg',0)
-img2 = cv2.imread('bilds/book1.jpg',0) 
-img11 = cv2.imread('bilds/book2.jpg')
-img11 = img11[:, :, ::-1]
-img22 = cv2.imread('bilds/book1.jpg')
-img22 = img22[:, :, ::-1]
+img1 = cv2.imread('bilds/book2.jpg')
+img2 = cv2.imread('bilds/book1.jpg') 
+#img1 = img1[:, :, ::-1]
+#img2 = img2[:, :, ::-1]
 
 img1_pts, img2_pts, inliers2, inliers1,H = matches(img1,img2)
 print '----------------'
-print inliers1[0]
-print inliers2[0]
 
-#plot_inliers(img11,img1_pts,inliers1,img22,img2_pts,inliers2)
+#plot_inliers(img1,img1_pts,inliers1,img2,img2_pts,inliers2)
 
-img_2 = cv2.warpPerspective(img22,H,(1000,750))
-#affine transformation matrix
-mat = matrix([[1, 0, abs(inliers1[0][1]-inliers2[0][1])],[0, 1, abs(inliers1[0][0]-inliers2[0][0])]])
-mat1 = matrix([[1, 0, 0],[0, 1, 0]])
-img_2_warped = cv2.warpAffine(img_2,mat,(1500,1100))
-img_1_warped = cv2.warpAffine(img11,mat,(1500,1100))
+h1,w1 = img1.shape[:2]
+h2,w2 = img2.shape[:2]
+dim = array((h2,w2))*matrix([[H[0][0],H[0][1]],[H[1][0],H[1][1]]])
+dim = dim.tolist()
+h = int(round(dim[0][1]))
+w = w2 + int(round(dim[0][0]))
 
-b = cv2.addWeighted(img_1_warped,0.5,img_2_warped,0.5,0.5)
-plt.imshow(b)
+img_2 = cv2.warpPerspective(img2,H,(w,h))
+#affine transformation matrix, the picture should align if H is ok
+mat = matrix([[1, 0, 0], [0, 1, 0]], dtype=float)
+im2w = cv2.warpAffine(img_2,mat,(w,h))
+im1w = cv2.warpAffine(img1,mat,(w,h))
+
+D = cv2.max(im2w,im1w)
+ima2 = cv2.cvtColor(D,cv2.COLOR_BGR2RGB)
+cv2.imwrite('result_books.jpg',D)
+plt.imshow(ima2)
 plt.show()
+
 
