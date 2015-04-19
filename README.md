@@ -6,7 +6,7 @@ A very short project description: Stitch images for a mosaic panorama using serv
 ### Progress
 
 #### 2015-04-19
-First successful seam found. Key ideas is to remove certain areas that cross the seam.
+First successful seam found. Key idea is to remove certain areas that cross the seam.
 <p align="center">
 <img src="images/nice_seam.png" height="450" alt="Screenshot"/>
 </p>

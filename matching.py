@@ -80,8 +80,8 @@ def plot_inliers(img1, img1pts, inliers1, img2, img2pts, inliers2):
 
 from PIL import Image, ImageFilter, ImageOps, ImageChops
 # Test code	
-img1 = cv2.imread('bilds/book2.jpg')
-img2 = cv2.imread('bilds/book1.jpg') 
+img1 = cv2.imread('bilds/test22.jpg')
+img2 = cv2.imread('bilds/test11.jpg') 
 img1 = img1[:, :, ::-1]
 img2 = img2[:, :, ::-1]
 

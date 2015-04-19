@@ -9,8 +9,15 @@ def poor_mans_blending(img1, img2):
 	return  cv2.max(img1,img2)
 
 
-# Finds the optimal seam between A and B, 
-# Not done.
+# Finds a seam between A and B, 
+# Possible jumps in ths algorithm, i,j is the current
+# pixel
+#+------+-------+-------+
+#|	|  i,j	|	|	|	
+#|______|_______|_______|	|
+#|i+1,j	| i+1,j	|i+1,j+1|	|
+#|______|_______|_______|	V
+#
 def find_seam(A,B,source):
 	#d_sq = (cv2.min(A,B))**2
 	d_sq = (A-B)**2
