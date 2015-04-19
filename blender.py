@@ -49,9 +49,29 @@ def stitch(A,B,source):
 	row,col = A.shape[:2]
 	seam = _find_vertical_seam(A,B,source)
 
+	mean = []
 	for p in seam:
 		A[p[1],p[0]:col-1] = 0
 		B[p[1],0:p[0]] = 0
+		mean.append(A[p[1],p[0]-1:p[0]])
+		mean.append(B[p[1],p[0]:p[0]+1])
+		M = [0,0,0]
+		for sub in mean:
+			
+			for m in sub:
+				M += m 		
+				
+		
+		M /= 2
+		
+		
+		A[p[1],p[0]-1:p[0]] = M
+		B[p[1],p[0]:p[0]+1] = M
+
+		
+		mean = []
+	
+
 
 	C = cv2.add(A,B)
 	plt.imshow(C)

@@ -49,7 +49,7 @@ def matches(img1,img2):
 		img2p[1][i] = m[0][1]
 		i += 1		
 	
-	H,inliers,inliers2 = ransac(img1p,img2p,35,5.0)
+	H,inliers,inliers2 = ransac(img1p,img2p,40,4.0)
 	return img1_pts, img2_pts, inliers, inliers2, H
 
 
@@ -80,8 +80,8 @@ def plot_inliers(img1, img1pts, inliers1, img2, img2pts, inliers2):
 
 
 # Test code	
-img1 = cv2.imread('bilds/test22.jpg')
-img2 = cv2.imread('bilds/test11.jpg') 
+img1 = cv2.imread('bilds/book2.jpg')
+img2 = cv2.imread('bilds/book1.jpg') 
 img1 = img1[:, :, ::-1]
 img2 = img2[:, :, ::-1]
 # Call matches for extracting inliers and homography
