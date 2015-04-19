@@ -13,10 +13,10 @@ def poor_mans_blending(img1, img2):
 # Possible jumps in ths algorithm, i,j is the current
 # pixel
 #+------+-------+-------+
-#|	|  i,j	|	|	|	
-#|______|_______|_______|	|
-#|i+1,j	| i+1,j	|i+1,j+1|	|
-#|______|_______|_______|	V
+#|	 |  i,j	  |	  |	|	
+#|_______|________|_______|	|
+#|i+1,j-1| i+1,j  |i+1,j+1|	|
+#|_______|________|_______|	V
 #
 def find_seam(A,B,source):
 	#d_sq = (cv2.min(A,B))**2
