@@ -7,9 +7,9 @@
 # ---------------------------------------------------------------------
 import numpy as np
 import cv2 
-import cv
 from matplotlib import pyplot as plt
 from ransac import *
+import blender
 
 def matches(img1,img2):
 	hessian_tresh = 500 # may speed up, but gives smaller amount of kp.
@@ -49,7 +49,7 @@ def matches(img1,img2):
 		img2p[1][i] = m[0][1]
 		i += 1		
 	
-	H,inliers,inliers2 = ransac(img1p,img2p,20,3)
+	H,inliers,inliers2 = ransac(img1p,img2p,30,4.0)
 	return img1_pts, img2_pts, inliers, inliers2, H
 
 
@@ -78,12 +78,12 @@ def plot_inliers(img1, img1pts, inliers1, img2, img2pts, inliers2):
 	plt.show()
 
 
-from PIL import Image
+from PIL import Image, ImageFilter, ImageOps, ImageChops
 # Test code	
 img1 = cv2.imread('bilds/book2.jpg')
 img2 = cv2.imread('bilds/book1.jpg') 
-#img1 = img1[:, :, ::-1]
-#img2 = img2[:, :, ::-1]
+img1 = img1[:, :, ::-1]
+img2 = img2[:, :, ::-1]
 
 img1_pts, img2_pts, inliers2, inliers1,H = matches(img1,img2)
 print '----------------'
@@ -94,19 +94,39 @@ h1,w1 = img1.shape[:2]
 h2,w2 = img2.shape[:2]
 dim = array((h2,w2))*matrix([[H[0][0],H[0][1]],[H[1][0],H[1][1]]])
 dim = dim.tolist()
-h = int(round(dim[0][1]))
-w = w2 + int(round(dim[0][0]))
+dim1 = array((h1,w1))*matrix([[H[0][0],H[0][1]],[H[1][0],H[1][1]]])
+dim1 = dim1.tolist()
+h = int(round(dim[0][1]*1.2))
+w = w2 + int(round(dim[0][0]*3.5))
 
 img_2 = cv2.warpPerspective(img2,H,(w,h))
 #affine transformation matrix, the picture should align if H is ok
 mat = matrix([[1, 0, 0], [0, 1, 0]], dtype=float)
 im2w = cv2.warpAffine(img_2,mat,(w,h))
 im1w = cv2.warpAffine(img1,mat,(w,h))
+im2w = cv2.cvtColor(im2w,cv2.COLOR_BGR2RGB)
+im1w = cv2.cvtColor(im1w,cv2.COLOR_BGR2RGB)
+#D = cv2.max(im2w,im1w)
+#ima2 = cv2.cvtColor(D,cv2.COLOR_BGR2RGB)
+#ima1 = ImageOps.flip(Image.fromarray(ima2))
+#ima1 = ima1.filter(ImageFilter.SMOOTH)
 
-D = cv2.max(im2w,im1w)
-ima2 = cv2.cvtColor(D,cv2.COLOR_BGR2RGB)
-cv2.imwrite('result_books.jpg',D)
-plt.imshow(ima2)
+#ima = ImageOps.flip(Image.fromarray(im1w))
+#imb = ImageOps.flip(Image.fromarray(im2w))
+#test = ImageChops.lighter(ima,imb)
+
+
+#test = test.filter(ImageFilter.SMOOTH)
+
+A = cv2.cvtColor(im1w,cv2.COLOR_RGB2GRAY)
+B = cv2.cvtColor(im2w,cv2.COLOR_RGB2GRAY)
+#A = im1w
+#B = im2w
+#im1 = cv2.max(A,B)
+im1 = blender.find_seam(A,B,w2)
+
+#cv2.imwrite('result_books.jpg',ima2)
+plt.imshow(im1)
 plt.show()
 
 
