@@ -10,6 +10,7 @@ import cv2
 from matplotlib import pyplot as plt
 from ransac import *
 import blender
+import warp
 
 def matches(img1,img2):
 	hessian_tresh = 500 # may speed up, but gives smaller amount of kp.
@@ -49,7 +50,7 @@ def matches(img1,img2):
 		img2p[1][i] = m[0][1]
 		i += 1		
 	
-	H,inliers,inliers2 = ransac(img1p,img2p,40,4.0)
+	H,inliers,inliers2 = ransac(img1p,img2p,60,1.0)
 	return img1_pts, img2_pts, inliers, inliers2, H
 
 
@@ -77,25 +78,31 @@ def plot_inliers(img1, img1pts, inliers1, img2, img2pts, inliers2):
 	ax2.legend([a, b], ["SURF matches", "RANSAC inliers"])
 	plt.show()
 
-
-
+# Ugly quick fix
+###############################################1
 # Test code	
-img1 = cv2.imread('bilds/book2.jpg')
-img2 = cv2.imread('bilds/book1.jpg') 
+f = 5000.645443005 
+
+
+img1 = cv2.imread('bilds/ny/ny1.jpg')
+img2 = cv2.imread('bilds/ny/ny2.jpg') 
 img1 = img1[:, :, ::-1]
 img2 = img2[:, :, ::-1]
+img1 = warp.spherical_warp(img1, f)
+img2 = warp.spherical_warp(img2, f)
+
 # Call matches for extracting inliers and homography
 img1_pts, img2_pts, inliers2, inliers1,H = matches(img1,img2)
 print '----------------'
-
 #plot_inliers(img1,img1_pts,inliers1,img2,img2_pts,inliers2)
 
 # Try to calculate the stitched image size
 h2,w2 = img2.shape[:2]
-dim = array((h2,w2))*matrix([[H[0][0],H[0][1]],[H[1][0],H[1][1]]])
-dim = dim.tolist()
-h = int(round(dim[0][1]*1.2))
-w = w2 + int(round(dim[0][0]*1.5))
+tx = H[0,2]
+ty = H[1,2]
+h = int(round(h2 + ty)*1.05)
+w = int(round(w2 + tx)*1.09)
+H = np.matrix([[1,0,tx],[0,1,ty],[0,0,1]])
 
 img2_warped = cv2.warpPerspective(img2,H,(w,h))
 #affine transformation matrix, the picture should align if H is ok
@@ -105,9 +112,78 @@ im2w = cv2.warpAffine(img2_warped,mat,(w,h))
 
 # Find a seam between the two images
 #im1 = blender._find_seam(im1w,im2w,w2)
-blender.stitch(im1w,im2w,w2+100)
+A = blender.stitch(im1w,im2w,w2+320)
 
 #cv2.imwrite('result_books.jpg',ima2)
 
+##################################################2
+
+img1 = img2.copy()
+img2 = cv2.imread('bilds/ny/ny3.jpg') 
+#img1 = img1[:, :, ::-1]
+img2 = img2[:, :, ::-1]
+#img1 = warp.spherical_warp(img1, f)
+img2 = warp.spherical_warp(img2, f)
+
+# Call matches for extracting inliers and homography
+img1_pts, img2_pts, inliers2, inliers1,H = matches(img1,img2)
+print '----------------'
+#plot_inliers(img1,img1_pts,inliers1,img2,img2_pts,inliers2)
+
+# Try to calculate the stitched image size
+h2,w2 = img2.shape[:2]
+tx = H[0,2]
+ty = H[1,2]
+h = int(round(h2 + ty)*1.05)
+w = int(round(w2 + tx)*1.09)
+H = np.matrix([[1,0,tx],[0,1,ty],[0,0,1]])
+
+img2_warped = cv2.warpPerspective(img2,H,(w,h))
+#affine transformation matrix, the picture should align if H is ok
+mat = matrix([[1, 0, 0], [0, 1, 0]], dtype=float)
+im1w = cv2.warpAffine(img1,mat,(w,h))
+im2w = cv2.warpAffine(img2_warped,mat,(w,h))
+
+# Find a seam between the two images
+#im1 = blender._find_seam(im1w,im2w,w2)
+B = blender.stitch(im1w,im2w,w2+320)
+
+#cv2.imwrite('result_books.jpg',ima2)
+
+##################################################3
+
+img1 = A
+img2 = B
+img1 = img1[:, :, ::-1]
+img2 = img2[:, :, ::-1]
+img1 = warp.spherical_warp(img1, f)
+img2 = warp.spherical_warp(img2, f)
+
+# Call matches for extracting inliers and homography
+img1_pts, img2_pts, inliers2, inliers1,H = matches(img1,img2)
+print '----------------'
+#plot_inliers(img1,img1_pts,inliers1,img2,img2_pts,inliers2)
+
+# Try to calculate the stitched image size
+h2,w2 = img2.shape[:2]
+tx = H[0,2]
+ty = H[1,2]
+h = int(round(h2 + ty)*1.05)
+w = int(round(w2 + tx)*1.09)
+H = np.matrix([[1,0,tx],[0,1,ty],[0,0,1]])
+
+img2_warped = cv2.warpPerspective(img2,H,(w,h))
+#affine transformation matrix, the picture should align if H is ok
+mat = matrix([[1, 0, 0], [0, 1, 0]], dtype=float)
+im1w = cv2.warpAffine(img1,mat,(w,h))
+im2w = cv2.warpAffine(img2_warped,mat,(w,h))
+
+# Find a seam between the two images
+#im1 = blender._find_seam(im1w,im2w,w2)
+B = blender.stitch(im1w,im2w,w2+400)
+
+#cv2.imwrite('result_books.jpg',ima2)
+
+##################################################
 
 

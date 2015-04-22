@@ -79,8 +79,8 @@ def ransac(xA, xB, max_iter = 50, err = 5):
 			error = linalg.norm(a-b) # nice!	
 			if error < err:
 				total += 1
-				inliers_cand1.append(a.conj().transpose().tolist())
-				inliers_cand2.append(c.conj().transpose().tolist())
+				inliers_cand1.append(a.conj().transpose())
+				inliers_cand2.append(c.conj().transpose())
 					
 		# Check if total exceeds the record, then update the best
 		# homography and the inliers.
@@ -90,5 +90,8 @@ def ransac(xA, xB, max_iter = 50, err = 5):
 			H_best = Ht
 			best_inliers1 = inliers_cand1
 			best_inliers2 = inliers_cand2
-
+	best_inliers1 = array(best_inliers1)
+	best_inliers2 = array(best_inliers2)
+	H_best = homography(best_inliers1.conj().transpose(),best_inliers2.conj().transpose())
+	
 	return H_best, best_inliers1, best_inliers2

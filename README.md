@@ -5,6 +5,14 @@ A very short project description: Stitch images for a mosaic panorama using serv
 
 ### Progress
 
+#### 2015-04-22
+Nice results after only using translation fron the Ransac algorithm. 
+<p align="center">
+<img src="images/ny_city_stitch.jpg" height="450" alt="Screenshot"/>
+</p>
+"<a href="http://commons.wikimedia.org/wiki/File:NYC_Pan3.jpg#/media/File:NYC_Pan3.jpg">NYC Pan3</a>" by <a href="//commons.wikimedia.org/wiki/User:Jnn13" title="User:Jnn13">Jnn13</a> - <span class="int-own-work" lang="en">Own work</span>. Licensed under <a href="http://creativecommons.org/licenses/by-sa/3.0" title="Creative Commons Attribution-Share Alike 3.0">CC BY-SA 3.0</a> via <a href="//commons.wikimedia.org/wiki/">Wikimedia Commons</a>.
+
+
 #### 2015-04-19
 Test stitching after seam was found.
 <p align="center">
