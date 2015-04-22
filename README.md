@@ -6,7 +6,7 @@ A very short project description: Stitch images for a mosaic panorama using serv
 ### Progress
 
 #### 2015-04-22
-Nice results after only using translation fron the Ransac algorithm. 
+Nice results after only using translation from the Ransac algorithm. 
 <p align="center">
 <img src="images/ny_city_stitch.jpg" height="250" alt="Screenshot"/>
 </p>
