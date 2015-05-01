@@ -1,6 +1,6 @@
+#!/usr/bin/env python
 # ---------------------------------------------------------------------
-# First version of RANSAC implemented. Should work ok. 
-# Outputs good inliers.
+# RANSAC implemented in python.
 #
 # Alexander Karlsson
 # ---------------------------------------------------------------------
@@ -8,19 +8,22 @@ from numpy import *
 import scipy
 import scipy.linalg
 
-# Divides each row with the third row
 def pflat(x):
+	""" Divides each row with the third row """
+
 	x = x[0:3] / x[2]
 	return x 
 
 
-# Converts to homogeneous cordinates
 def homogeneous(x):
+	""" Converts to homogeneous cordinates """
+
 	return vstack((x,ones((1,x.shape[1]))))
 
 
-# Computes the homography between x1 and x2 using DLT and SVD
 def homography(x1,x2):
+	""" Computes the homography between x1 and x2 using DLT and SVD """
+
 	N = x1.shape[1]
 	M = zeros((2*N,9))
 
@@ -36,9 +39,10 @@ def homography(x1,x2):
 	return H / H[2,2]
 
 
-# RANSAC algorithm, finds the homography from xA to xB.
-# Terminates when max_iter is reached. err shouldbe about 5 pxls.
 def ransac(xA, xB, max_iter = 50, err = 5):
+	""" RANSAC algorithm, finds the homography from xA to xB. 
+	Stops when max_iter is reached. err shouldbe about 5 pxls. """
+
 	inliers_record = 0 
 	xa = xA[0] 
 	ya = xA[1]
@@ -65,6 +69,7 @@ def ransac(xA, xB, max_iter = 50, err = 5):
 		
 		Ht = homography(xB_rand, xA_rand)
 		p1 = vstack((xa,ya,ones((1,xa.shape[0]))))
+		# New model, better?
 		p2 = pflat(linalg.solve(Ht,p1))
 		x = p2[0]
 		y = p2[1]
@@ -92,6 +97,7 @@ def ransac(xA, xB, max_iter = 50, err = 5):
 			best_inliers2 = inliers_cand2
 	best_inliers1 = array(best_inliers1)
 	best_inliers2 = array(best_inliers2)
-	H_best = homography(best_inliers1.conj().transpose(),best_inliers2.conj().transpose())
+	H_best = homography(best_inliers1.conj().transpose(),
+	best_inliers2.conj().transpose())
 	
 	return H_best, best_inliers1, best_inliers2
