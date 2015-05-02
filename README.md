@@ -5,6 +5,12 @@ A very short project description: Stitch images for a mosaic panorama using serv
 
 ### Progress
 
+#### 2015-05-02
+First successfull autostitching of four horizontal images. It works well for images at a minimum distance of about two meters from the camera. 
+<p align="center">
+<img src="images/auto_stitched.jpg" height="250" alt="Screenshot"/>
+</p>
+
 #### 2015-04-22
 Nice results after only using translation from the Ransac algorithm. 
 <p align="center">

@@ -9,7 +9,6 @@
 import io
 import time
 import picamera
-from pylab import *
 import cv2
 import numpy as np
 
@@ -18,10 +17,10 @@ class Camera:
 	images.append([])	
 	col = 0
 	camera = picamera.PiCamera()
-	camera.resolution = (640,450)
 
-	def __init__(self):
+	def __init__(self, width = 640, height = 450):
 		time.sleep(2) 	# Warmup time for camera
+		self.camera.resolution = (width,height)
 
 
 	def snap_image(self):

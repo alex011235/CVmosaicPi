@@ -98,7 +98,7 @@ img1 = warp.spherical_warp(img1, f)
 img2 = warp.spherical_warp(img2, f)
 
 # Call matches for extracting inliers and homography
-img1_pts, img2_pts, inliers2, inliers1,H = matches(img1,img2)
+H = matches(img1,img2)
 print '----------------'
 #plot_inliers(img1,img1_pts,inliers1,img2,img2_pts,inliers2)
 
@@ -122,8 +122,8 @@ A = A[:, :, ::-1]
 plt.imshow(A)
 plt.show()
 #cv2.imwrite('result_books.jpg',ima2)
-
 '''
+
 
 '''
 img1 = cv2.imread('bilds/room1.jpg')

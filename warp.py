@@ -11,10 +11,10 @@ import numpy as np
 def spherical_warp(img, f):
 	""" Spherical warp of the image img. """
 
-	k1 = 0.8
-	k2 = 0.8
-	k2 = -0.03377441
+	#k1 = 0.8
+	#k2 = 0.8
 	k1 =  0.63151103
+	k2 = -0.03377441
 	img_shape = np.array(img.shape)
 	# calculate minimum y value
 	min_y = np.sin(0.0)
